@@ -69,9 +69,7 @@ class UserHelper: HeaderHelper {
                         completion(true, resultJSON, nil)
                     } else {
                         print("something wrong")
-                        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                        appDelegate.showToasterMessage("Something went wrong, please restart the the app")
-                        return
+                        completion(false, nil, nil)
                     }
                 }
             }
