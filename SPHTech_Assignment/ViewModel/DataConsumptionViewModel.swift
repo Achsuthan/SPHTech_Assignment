@@ -11,7 +11,7 @@ import CoreData
 
 
 class DataConsumptionViewModel {
-    private var pathUrl = "/api/action/datastore_search?resource_id=a807b7ab-6cad-4aa6-87d0-e283a7353a0f&limitt=28"
+    private var pathUrl = "/api/action/datastore_search?resource_id=a807b7ab-6cad-4aa6-87d0-e283a7353a0f&limit=28"
     private var consummptionModel = DataConsumptionModel(records: [], _links: Links(next: ""))
     private var yearConsumption:[YearDataConsumption] = [YearDataConsumption]()
     
@@ -19,7 +19,7 @@ class DataConsumptionViewModel {
     private var isCallAPI: Bool = false
     
     private var isInternetFound: Bool = false
-    var delegate: SuccessGetData!
+    var delegate: SuccessGetData?
     
     
     //Setters
@@ -54,6 +54,7 @@ class DataConsumptionViewModel {
     }
     
     public func createYearConsumptionArray(){
+        print("createYearConsumptionArray")
         yearConsumption = []
         let tmp = Dictionary(grouping: consummptionModel.records, by: {Int($0.quarter.split(separator: "-")[0]) ?? 0}).sorted{$0.key < $1.key}
         for (key, value) in tmp {
@@ -65,11 +66,22 @@ class DataConsumptionViewModel {
             }
             yearConsumption.append(YearDataConsumption(year: "\(key)", usage: usage, usageArrayForYearQuarter: quarterArray))
         }
-        self.delegate.getSuccessData()
+        self.delegate?.getSuccessData()
     }
+    
+    #if DEBUG
+    //use this function only for testing purpose
+    public func setConsummptionModelData(_ data: DataConsumptionModel){
+        self.consummptionModel = data
+        self.createYearConsumptionArray()
+    }
+    #endif
     
     
     //Getters
+    public func getYearArray()-> [YearDataConsumption]{
+        return yearConsumption
+    }
     public func getPathUrl()-> String{
         return pathUrl
     }
@@ -97,6 +109,7 @@ class DataConsumptionViewModel {
                 for val in 0...index{
                     if tmp[val] > element{
                         found = true
+                        break
                     }
                 }
             }

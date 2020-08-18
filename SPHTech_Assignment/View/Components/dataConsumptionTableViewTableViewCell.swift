@@ -13,6 +13,11 @@ class dataConsumptionTableViewTableViewCell: UITableViewCell {
     let viewBackground: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.15).cgColor
+        view.layer.shadowOpacity = 1
+        view.layer.shadowOffset = .zero
+        view.layer.shadowRadius = 2
+        view.backgroundColor = .white
         return view
     }()
     
@@ -65,10 +70,10 @@ class dataConsumptionTableViewTableViewCell: UITableViewCell {
     
     private func setUp(){
         self.addSubview(self.viewBackground)
-        self.viewBackground.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-        self.viewBackground.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
-        self.viewBackground.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
-        self.viewBackground.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        self.viewBackground.topAnchor.constraint(equalTo: self.topAnchor, constant: 10).isActive = true
+        self.viewBackground.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10).isActive = true
+        self.viewBackground.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10).isActive = true
+        self.viewBackground.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10).isActive = true
         self.viewBackground.heightAnchor.constraint(greaterThanOrEqualToConstant: 80).isActive = true
         
         self.viewBackground.addSubview(self.img)

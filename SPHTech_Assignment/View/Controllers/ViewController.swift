@@ -55,6 +55,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     let dataConsumptionTableView: UITableView = {
         let tabel = UITableView()
         tabel.translatesAutoresizingMaskIntoConstraints = false
+        tabel.separatorStyle = .none
         return tabel
     }()
     
@@ -91,7 +92,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let reachability = note.object as! Reachability
          let appDelegate = UIApplication.shared.delegate as! AppDelegate
         if reachability.connection != .unavailable {
-//            dataConsumptionTableView.setContentOffset(.zero, animated: true)
             self.dataConsumptionViewModel.delegate = self
             let previousState = self.dataConsumptionViewModel.getIsInternetFound()
             if !previousState {
