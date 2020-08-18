@@ -205,13 +205,13 @@ class DataConsumptionViewModel {
                     else {
                         self.isCallAPI = true
                         let error  = response?["error"] as? [String: Any]
-                        appDelegate.showToasterMessage(error?["__type"] as? String ?? "Something went wrong, please restart the the app")
+                        appDelegate.showToasterMessage(error?["__type"] as? String ?? "Something went wrong, try restarting the app few minutes")
                         
                     }
                 }
                 else {
                     self.isCallAPI = true
-                    appDelegate.showToasterMessage("Something went wrong, please restart the the app")
+                    appDelegate.showToasterMessage("Something went wrong, try restarting the app few minutes")
                 }
             }
         }

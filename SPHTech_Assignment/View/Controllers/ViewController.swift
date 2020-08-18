@@ -96,7 +96,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             let previousState = self.dataConsumptionViewModel.getIsInternetFound()
             if !previousState {
                 if self.dataConsumptionViewModel.getTotalRecordCount() > 0 {
-                    appDelegate.showToasterMessage("You are live now, trying to featch the latest data....")
+                    appDelegate.showToasterMessage("You are live now, the app is trying to fetch the latest data.")
                 }
                 self.dataConsumptionViewModel.setIsInternetFound(true)
                 self.dataConsumptionViewModel.setIsCallAPI(true)
@@ -107,7 +107,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             self.dataConsumptionViewModel.setIsInternetFound(false)
             self.dataConsumptionViewModel.setPathUrl("/api/action/datastore_search?resource_id=a807b7ab-6cad-4aa6-87d0-e283a7353a0f&limit=28")
             self.dataConsumptionViewModel.setIsCallAPI(false)
-            appDelegate.showToasterMessage("Please check your internet connection, cashe data will be display")
+            appDelegate.showToasterMessage("Please check your internet connection, cached data will be displayed here.")
             print("Not reachable")
         }
     }
