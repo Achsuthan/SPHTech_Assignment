@@ -23,6 +23,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
+    
+    
     // MARK: UISceneSession Lifecycle
     
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
@@ -89,6 +91,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         nav.navigationBar.isHidden = true
         self.window?.rootViewController = nav
         self.window?.makeKeyAndVisible()
+    }
+    
+    func showToasterMessage(_ message: String){
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            let vc = ErrorMessageViewController(nibName: nil, bundle: nil)
+            vc.modalPresentationStyle = .fullScreen
+            vc.modalPresentationStyle = .overCurrentContext
+            vc.message = message
+            if #available(iOS 13.0, *) {
+                vc.isModalInPresentation = true
+            } else {
+                vc.providesPresentationContextTransitionStyle = true
+            }
+            self.window?.rootViewController?.present(vc, animated: false)
+        }
     }
     
 }
