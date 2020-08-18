@@ -12,7 +12,6 @@ struct DataConsumptionModel:Codable {
     var records: [Records]
     var _links: Links
     var offset: Int? = 0
-    var total: Int? = 0
 }
 
 struct Records:Codable {
@@ -23,4 +22,10 @@ struct Records:Codable {
 
 struct Links:Codable {
     var next: String?
+}
+
+struct YearDataConsumption {
+    var year: String
+    var usage: Double
+    var usageArrayForYearQuarter: [Double]
 }
