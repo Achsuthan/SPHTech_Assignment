@@ -1,4 +1,5 @@
 ${PODS_ROOT}/Target Support Files/Pods-SPHTech_Assignment-SPHTech_AssignmentUITests/Pods-SPHTech_Assignment-SPHTech_AssignmentUITests-frameworks.sh
 ${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework
 ${BUILT_PRODUCTS_DIR}/ObjectMapper/ObjectMapper.framework
+${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework
 ${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework

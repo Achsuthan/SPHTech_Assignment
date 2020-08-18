@@ -11,6 +11,9 @@ target 'SPHTech_Assignment' do
   pod 'Alamofire', '~> 4.5'
   pod 'SwiftyJSON'
   pod 'ObjectMapper', '~> 3.0'
+  
+ #Reachability
+ pod 'ReachabilitySwift'
 
 
   target 'SPHTech_AssignmentTests' do
