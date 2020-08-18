@@ -6,14 +6,21 @@
 //  Copyright © 2020 Achsuthan Mahendran. All rights reserved.
 //
 
-import Foundation
+import UIKit
+import CoreData
 
 
 class DataConsumptionViewModel {
-    private var pathUrl = "/api/action/datastore_search?resource_id=a807b7ab-6cad-4aa6-87d0-e283a7353a0f&limit=20"
-    private var consumtionModel = DataConsumptionModel(records: [], _links: Links(next: ""), total: 0)
+    private var pathUrl = "/api/action/datastore_search?resource_id=a807b7ab-6cad-4aa6-87d0-e283a7353a0f&limit=28"
+    private var consummptionModel = DataConsumptionModel(records: [], _links: Links(next: ""))
+    private var yearConsumption:[YearDataConsumption] = [YearDataConsumption]()
+    
+    private var backupConsummptionModel = DataConsumptionModel(records: [], _links: Links(next: ""))
     private var isCallAPI: Bool = false
+    
+    private var isInternetFound: Bool = false
     var delegate: SuccessGetData!
+    
     
     //Setters
     public func setPathUrl(_ data: String){
@@ -25,7 +32,41 @@ class DataConsumptionViewModel {
     }
     
     public func getNextUrl()-> String{
-        return self.consumtionModel._links.next ?? ""
+        return self.consummptionModel._links.next ?? ""
+    }
+    
+    public func setIsInternetFound(_ data: Bool){
+        self.isInternetFound = data
+        if !data {
+            self.getAllRecords()
+            self.consummptionModel = self.backupConsummptionModel
+            self.createYearConsumptionArray()
+        }
+        else{
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            let context = appDelegate.persistentContainer.viewContext
+            let ReqVar = NSFetchRequest<NSFetchRequestResult>(entityName: "DataConsumptionRecord")
+            let DelAllReqVar = NSBatchDeleteRequest(fetchRequest: ReqVar)
+            do { try context.execute(DelAllReqVar) }
+            catch { print(error) }
+            self.consummptionModel = DataConsumptionModel(records: [], _links: Links(next: ""))
+        }
+    }
+    
+    public func createYearConsumptionArray(){
+        yearConsumption = []
+        let tmp = Dictionary(grouping: consummptionModel.records, by: {Int($0.quarter.split(separator: "-")[0]) ?? 0}).sorted{$0.key < $1.key}
+        for (key, value) in tmp {
+            var usage = 0.0
+            var quarterArray:[Double] = []
+            let _ = value.enumerated().map{(index, element) in
+                usage += Double(element.volume_of_mobile_data) ?? 0.0
+                quarterArray.append(Double(element.volume_of_mobile_data) ?? 0.0)
+            }
+            yearConsumption.append(YearDataConsumption(year: "\(key)", usage: usage, usageArrayForYearQuarter: quarterArray))
+        }
+        print("YearCons", self.yearConsumption)
+        self.delegate.getSuccessData()
     }
     
     
@@ -35,30 +76,96 @@ class DataConsumptionViewModel {
     }
     
     public func getTotalRecordCount()-> Int{
-        return self.consumtionModel.records.count
+        return self.yearConsumption.count
     }
     
     public func getSingleUsage(_ index: Int)-> String{
-        return self.consumtionModel.records[index].volume_of_mobile_data
+        return "Usage: \(self.yearConsumption[index].usageArrayForYearQuarter.count == 4 ? "\(String(format: "%.6f", self.yearConsumption[index].usageArrayForYearQuarter.reduce(0, {sum, number in sum + number})/4))" : "* Data for all 4 quarters not available")"
     }
     
     public func getSingleYear(_ index: Int)->String{
-        return self.consumtionModel.records[index].quarter
+        return "Year: \(self.yearConsumption[index].year)"
+    }
+    
+    public func isClickableImage(_ index: Int)-> Int {
+        let tmp = self.yearConsumption[index].usageArrayForYearQuarter
+        if tmp.count != 4 {
+            return -1
+        }
+        var found  = false
+        let _ = tmp.enumerated().map{(index, element) in
+            if index > 0 {
+                for val in 0...index{
+                    if tmp[val] > element{
+                        found = true
+                    }
+                }
+            }
+        }
+        
+        return found ? index : -1
+        
     }
     
     public func needToCallAPI(_ currentIndex: Int)-> Bool{
-        return currentIndex >= self.consumtionModel.records.count - 1 && isCallAPI
+        return currentIndex >= self.yearConsumption.count - 1 && isCallAPI
     }
     
     public func isCallAPIFn()-> Bool{
         return isCallAPI
     }
     
+    public func getIsInternetFound()-> Bool{
+        return self.isInternetFound
+    }
     
+    //Core Data
+    func addRecordsData(_ records:[Records]){
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        
+        guard let entity = NSEntityDescription.entity(forEntityName: "DataConsumptionRecord", in: context) else {
+            fatalError("could not find entity description!")
+        }
+        
+        
+        for val in records {
+            let newRecored = NSManagedObject(entity: entity, insertInto: context)
+            newRecored.setValue(val._id, forKey: "id")
+            newRecored.setValue(val.quarter, forKey: "quarter")
+            newRecored.setValue(val.volume_of_mobile_data, forKey: "volume_of_mobile_data")
+            do {
+                try context.save()
+            } catch{
+                print("Failed to save the data")
+            }
+        }
+        self.getAllRecords()
+    }
+    
+    //getdata from Core data
+    public func getAllRecords(){
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "DataConsumptionRecord")
+        request.returnsObjectsAsFaults = false
+        do {
+            let result = try context.fetch(request)
+            var tmp = DataConsumptionModel(records: [], _links: Links(next: ""))
+            for data in result as! [NSManagedObject] {
+                tmp.records.append(Records(_id: data.value(forKey: "id") as! Int, volume_of_mobile_data: data.value(forKey: "volume_of_mobile_data") as! String, quarter: data.value(forKey: "quarter") as! String))
+            }
+            self.backupConsummptionModel = tmp
+            
+        } catch {
+            print("Failed")
+        }
+    }
     
     //API calls
     public func getData(){
         if isCallAPI {
+            self.isCallAPI = false
             RequestUrls.getData = pathUrl
             UserHelper.callAPI(urlName: .getData, method: .get, parameters: [:]) { (status, result, error) in
                 if status {
@@ -66,17 +173,19 @@ class DataConsumptionViewModel {
                     let success = response?["success"] as! Int
                     if success == 1 {
                         self.isCallAPI = true
-                        print("success")
                         if let jsonData = try? JSONEncoder().encode(result!["result"] ),
                             let jsonString = String(data: jsonData, encoding: .utf8) {
                             if let data = jsonString.data(using: .utf8),
                                 let dataConsumption = try? JSONDecoder().decode(DataConsumptionModel.self, from: data) {
-                                self.consumtionModel.records.append(contentsOf: dataConsumption.records)
-                                self.consumtionModel._links = dataConsumption._links
+                                self.consummptionModel.records.append(contentsOf: dataConsumption.records)
+                                self.consummptionModel._links = dataConsumption._links
                                 if dataConsumption.records.count == 0 {
                                     self.isCallAPI = false
                                 }
-                                self.delegate.getSuccessData()
+                                else {
+                                    self.addRecordsData(dataConsumption.records)
+                                }
+                                self.createYearConsumptionArray()
                             }
                         }
                     }
