@@ -62,6 +62,7 @@ class dataConsumptionTableViewTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.setUp()
+        self.setupAccessibilityidentifierSetup()
     }
     
     required init?(coder: NSCoder) {
@@ -95,6 +96,12 @@ class dataConsumptionTableViewTableViewCell: UITableViewCell {
         self.lblDataUsage.leadingAnchor.constraint(equalTo: self.viewBackground.leadingAnchor, constant: 10).isActive = true
         self.lblDataUsage.trailingAnchor.constraint(equalTo: self.viewBackground.trailingAnchor, constant: -10).isActive = true
         self.lblDataUsage.bottomAnchor.constraint(equalTo: self.viewBackground.bottomAnchor, constant: -10).isActive = true
+    }
+    
+    private func setupAccessibilityidentifierSetup(){
+        self.lblYear.accessibilityIdentifier = AccessibilityIdentifier.yearLabe.rawValue
+        self.lblDataUsage.accessibilityIdentifier = AccessibilityIdentifier.dataUsageLabel.rawValue
+        self.viewBackground.accessibilityIdentifier = AccessibilityIdentifier.backgroundCell.rawValue
     }
     
     @objc func imgClicked(gesture: UIGestureRecognizer) {

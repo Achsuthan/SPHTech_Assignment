@@ -21,6 +21,7 @@
 		4F660CC824EAF7C100E5B81A /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F660CC724EAF7C100E5B81A /* Protocols.swift */; };
 		4F660CCA24EAF90600E5B81A /* DataConsumptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F660CC924EAF90600E5B81A /* DataConsumptionViewModel.swift */; };
 		4F660CCC24EAFC0100E5B81A /* DataConsumptionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F660CCB24EAFC0100E5B81A /* DataConsumptionModel.swift */; };
+		4FD83A6124EC3FF300019E4A /* AccessibilityIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD83A6024EC3FF300019E4A /* AccessibilityIdentifier.swift */; };
 		4FDC624024EBEEFB00B80692 /* ErrorMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FDC623F24EBEEFB00B80692 /* ErrorMessageViewController.swift */; };
 		4FF9E1F924EAEE5200F1CF27 /* HeaderHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF9E1F824EAEE5200F1CF27 /* HeaderHelper.swift */; };
 		4FF9E1FB24EAEE5700F1CF27 /* RequestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF9E1FA24EAEE5700F1CF27 /* RequestHelpers.swift */; };
@@ -70,6 +71,7 @@
 		4F660CC724EAF7C100E5B81A /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		4F660CC924EAF90600E5B81A /* DataConsumptionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataConsumptionViewModel.swift; sourceTree = "<group>"; };
 		4F660CCB24EAFC0100E5B81A /* DataConsumptionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataConsumptionModel.swift; sourceTree = "<group>"; };
+		4FD83A6024EC3FF300019E4A /* AccessibilityIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityIdentifier.swift; sourceTree = "<group>"; };
 		4FDC623F24EBEEFB00B80692 /* ErrorMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorMessageViewController.swift; sourceTree = "<group>"; };
 		4FF9E1F824EAEE5200F1CF27 /* HeaderHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderHelper.swift; sourceTree = "<group>"; };
 		4FF9E1FA24EAEE5700F1CF27 /* RequestHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestHelpers.swift; sourceTree = "<group>"; };
@@ -147,6 +149,7 @@
 		4F095ED624EAEB2800AF688A /* SPHTech_Assignment */ = {
 			isa = PBXGroup;
 			children = (
+				4FD83A5E24EC3FCD00019E4A /* TestingStrings */,
 				4F660CC624EAF7AD00E5B81A /* Protocols */,
 				4FF9E20024EAF14F00F1CF27 /* View */,
 				4FF9E1FF24EAF12900F1CF27 /* ViewModel */,
@@ -187,6 +190,22 @@
 				4F660CC724EAF7C100E5B81A /* Protocols.swift */,
 			);
 			path = Protocols;
+			sourceTree = "<group>";
+		};
+		4FD83A5E24EC3FCD00019E4A /* TestingStrings */ = {
+			isa = PBXGroup;
+			children = (
+				4FD83A5F24EC3FDC00019E4A /* AccessibilityIdentifier */,
+			);
+			path = TestingStrings;
+			sourceTree = "<group>";
+		};
+		4FD83A5F24EC3FDC00019E4A /* AccessibilityIdentifier */ = {
+			isa = PBXGroup;
+			children = (
+				4FD83A6024EC3FF300019E4A /* AccessibilityIdentifier.swift */,
+			);
+			path = AccessibilityIdentifier;
 			sourceTree = "<group>";
 		};
 		4FF9E1F724EAEE3F00F1CF27 /* Services */ = {
@@ -490,6 +509,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4FD83A6124EC3FF300019E4A /* AccessibilityIdentifier.swift in Sources */,
 				4F095EDC24EAEB2800AF688A /* ViewController.swift in Sources */,
 				4F095ED824EAEB2800AF688A /* AppDelegate.swift in Sources */,
 				4FF9E1F924EAEE5200F1CF27 /* HeaderHelper.swift in Sources */,

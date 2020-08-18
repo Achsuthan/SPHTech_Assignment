@@ -79,9 +79,6 @@ class DataConsumptionViewModel {
     
     
     //Getters
-    public func getYearArray()-> [YearDataConsumption]{
-        return yearConsumption
-    }
     public func getPathUrl()-> String{
         return pathUrl
     }

@@ -23,13 +23,16 @@ class SPHTech_AssignmentUITests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testExample() throws {
+    func testCellUI() throws {
         // UI tests must launch the application that they test.
         let app = XCUIApplication()
         app.launch()
 
         // Use recording to get started writing UI tests.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
+        app.tables.cells.containing(.staticText , identifier: "Year label").staticTexts["Year: 2004"].tap()
+        app.tables.cells.containing(.staticText , identifier: "Data usage label").staticTexts["Usage: 0.000693"].tap()
+        
     }
 
     func testLaunchPerformance() throws {
