@@ -11,7 +11,7 @@ import CoreData
 
 
 class DataConsumptionViewModel {
-    private var pathUrl = "/api/action/datastore_search?resource_id=a807b7ab-6cad-4aa6-87d0-e283a7353a0f&limit=28"
+    private var pathUrl = "/api/action/datastore_search?resource_id=a807b7ab-6cad-4aa6-87d0-e283a7353a0f&limitt=28"
     private var consummptionModel = DataConsumptionModel(records: [], _links: Links(next: ""))
     private var yearConsumption:[YearDataConsumption] = [YearDataConsumption]()
     
@@ -65,7 +65,6 @@ class DataConsumptionViewModel {
             }
             yearConsumption.append(YearDataConsumption(year: "\(key)", usage: usage, usageArrayForYearQuarter: quarterArray))
         }
-        print("YearCons", self.yearConsumption)
         self.delegate.getSuccessData()
     }
     
@@ -164,6 +163,7 @@ class DataConsumptionViewModel {
     
     //API calls
     public func getData(){
+         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         if isCallAPI {
             self.isCallAPI = false
             RequestUrls.getData = pathUrl
@@ -191,11 +191,14 @@ class DataConsumptionViewModel {
                     }
                     else {
                         self.isCallAPI = true
-                        print("failed")
+                        let error  = response?["error"] as? [String: Any]
+                        appDelegate.showToasterMessage(error?["__type"] as? String ?? "Something went wrong, please restart the the app")
+                        
                     }
                 }
                 else {
                     self.isCallAPI = true
+                    appDelegate.showToasterMessage("Something went wrong, please restart the the app")
                 }
             }
         }
