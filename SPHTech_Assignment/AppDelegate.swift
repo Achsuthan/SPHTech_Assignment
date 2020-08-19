@@ -84,6 +84,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
+    //Initial View handler function
     func hanlderPageController(_ window: UIWindow){
         self.window = window
         let LoginVc = ViewController(nibName: nil, bundle: nil)
@@ -93,6 +94,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window?.makeKeyAndVisible()
     }
     
+    //Show toaster message function
     func showToasterMessage(_ message: String){
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             let vc = ErrorMessageViewController(nibName: nil, bundle: nil)

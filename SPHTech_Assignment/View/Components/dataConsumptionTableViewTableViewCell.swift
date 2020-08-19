@@ -46,6 +46,7 @@ class dataConsumptionTableViewTableViewCell: UITableViewCell {
     }()
     
     var delegate: dataConsumtionImagclick!
+    //If index is -1 then the image will be hidden
     var index: Int = 0 {
         didSet{
             DispatchQueue.main.async {

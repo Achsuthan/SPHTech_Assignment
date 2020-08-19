@@ -36,6 +36,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        //Pagination handler using scroll
         if scrollView == dataConsumptionTableView {
             for cell in dataConsumptionTableView.visibleCells {
                 let indexPath = dataConsumptionTableView.indexPath(for: cell)
@@ -88,6 +89,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         }
     }
     
+    //Used to check the internet avialabilty
     @objc func reachabilityChanged(_ note: NSNotification) {
         let reachability = note.object as! Reachability
          let appDelegate = UIApplication.shared.delegate as! AppDelegate

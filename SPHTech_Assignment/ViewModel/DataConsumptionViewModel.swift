@@ -23,18 +23,21 @@ class DataConsumptionViewModel {
     
     
     //Setters
+    //set the path url
     public func setPathUrl(_ data: String){
         self.pathUrl = data
     }
-    
+    //set wather API can call or not
     public func setIsCallAPI(_ data: Bool){
         self.isCallAPI = data
     }
-    
+    //Get the next link from API response
     public func getNextUrl()-> String{
         return self.consummptionModel._links.next ?? ""
     }
-    
+    //Function to handle the internet is aviable or not
+    //If not avialable the core data details will be assgined to private variable
+    //Other wise clear the data from core data
     public func setIsInternetFound(_ data: Bool){
         self.isInternetFound = data
         if !data {
@@ -52,9 +55,8 @@ class DataConsumptionViewModel {
             self.consummptionModel = DataConsumptionModel(records: [], _links: Links(next: ""))
         }
     }
-    
+    //Fucntion is used to create the Year basis array
     public func createYearConsumptionArray(){
-        print("createYearConsumptionArray")
         yearConsumption = []
         let tmp = Dictionary(grouping: consummptionModel.records, by: {Int($0.quarter.split(separator: "-")[0]) ?? 0}).sorted{$0.key < $1.key}
         for (key, value) in tmp {
@@ -79,22 +81,25 @@ class DataConsumptionViewModel {
     
     
     //Getters
+    //Get the path URL
     public func getPathUrl()-> String{
         return pathUrl
     }
-    
+    //Get the total number of year from the API resonse which is used to show how many number of rows in a table view
     public func getTotalRecordCount()-> Int{
         return self.yearConsumption.count
     }
     
+    //Get the single usage details based on the index
     public func getSingleUsage(_ index: Int)-> String{
         return "Usage: \(self.yearConsumption[index].usageArrayForYearQuarter.count == 4 ? "\(String(format: "%.6f", self.yearConsumption[index].usageArrayForYearQuarter.reduce(0, {sum, number in sum + number})/4))" : "* Data for all 4 quarters not available")"
     }
-    
+    //Get the single year details based on the index
     public func getSingleYear(_ index: Int)->String{
         return "Year: \(self.yearConsumption[index].year)"
     }
     
+    //Function is used to check any drops in a year if yes return the current index otherwise -1
     public func isClickableImage(_ index: Int)-> Int {
         let tmp = self.yearConsumption[index].usageArrayForYearQuarter
         if tmp.count != 4 {
@@ -115,20 +120,20 @@ class DataConsumptionViewModel {
         return found ? index : -1
         
     }
-    
+    //pagination handler function
     public func needToCallAPI(_ currentIndex: Int)-> Bool{
         return currentIndex >= self.yearConsumption.count - 1 && isCallAPI
     }
-    
+    //Used to ge the API can call or not
     public func isCallAPIFn()-> Bool{
         return isCallAPI
     }
-    
+    //Get internet is avilable or not
     public func getIsInternetFound()-> Bool{
         return self.isInternetFound
     }
     
-    //Core Data
+    //Core Data add the data to entity
     func addRecordsData(_ records:[Records]){
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
