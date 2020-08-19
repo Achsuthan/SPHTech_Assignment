@@ -26,10 +26,6 @@ class UserHelper: HeaderHelper {
         case .getData:
             urlString = RequestUrls.getData
             
-            print("urlString \(urlString)")
-            print("parameter",tparameter)
-            print("method", method)
-            
             switch method {
             case .get:
                 Httpmethod = .get
@@ -43,8 +39,6 @@ class UserHelper: HeaderHelper {
             Alamofire.request(urlString,method: Httpmethod, parameters: tparameter.count > 0 ? tparameter : nil, encoding: JSONEncoding.default, headers: getCommonHeaders()).responseJSON { (dataResponse) in
                 if dataResponse.result.isSuccess {
                     let resultJSON = JSON(dataResponse.result.value!)
-                    
-                    print("result \(resultJSON)")
                     
                     if resultJSON["error"].stringValue  == "Unauthenticated." {
                         return
