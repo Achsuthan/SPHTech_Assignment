@@ -33,12 +33,34 @@ class SPHTech_AssignmentTests: XCTestCase {
         
         //test success API Call
         self.successAPICallTest(tmp)
-        self.failureAPICallTest1(tmp)
+//        self.failureAPICallTest1(tmp)
         self.failureAPICallTest2(tmp)
         
         self.testingOtherFunctionInViewController(tmp)
         self.checkNextUrl(tmp)
+        
+        self.checkBaseUrl()
+        self.checkBaseUrlPort()
+        self.checkCoreData(tmp)
 
+    }
+    
+    //Coredata Check
+    func checkCoreData(_ tmp: DataConsumptionViewModel){
+        tmp.setIsInternetFound(true)
+        tmp.addRecordsData([Records(_id: 1, volume_of_mobile_data: "0.000384", quarter: "2004-Q3"), Records(_id: 2, volume_of_mobile_data: "0.000543", quarter: "2004-Q4"), Records(_id: 3, volume_of_mobile_data: "0.00062", quarter: "2005-Q1"), Records(_id: 4, volume_of_mobile_data: "0.000634", quarter: "2005-Q2"), Records(_id: 5, volume_of_mobile_data: "0.000718", quarter: "2005-Q3"), Records(_id: 6, volume_of_mobile_data: "0.000801", quarter: "2005-Q4"), Records(_id: 7, volume_of_mobile_data: "3.466228", quarter: "2011-Q1"), Records(_id: 8, volume_of_mobile_data: "3.380723", quarter: "2011-Q2"), Records(_id: 9, volume_of_mobile_data: "3.713792", quarter: "2011-Q3"), Records(_id: 10, volume_of_mobile_data: "4.07796", quarter: "2011-Q4") ])
+        tmp.getAllRecords()
+        tmp.setIsInternetFound(false)
+        XCTAssertEqual(tmp.getTotalRecordCount(), 3, "Check the number of cells")
+    }
+    
+    //RequestURL check
+    func checkBaseUrl(){
+        XCTAssertEqual(RequestUrls.getBaseUrl(), "https://data.gov.sg", "requestUrl check")
+    }
+    
+    func checkBaseUrlPort(){
+        XCTAssertEqual(RequestUrls.checkBaseUrlPort(), "dev", "checkBaseUrlPort")
     }
     
     //checkNextURL
@@ -95,31 +117,14 @@ class SPHTech_AssignmentTests: XCTestCase {
     //Failure API call test
     func failureAPICallTest1(_ tmp: DataConsumptionViewModel){
         let url = NSURL(string: RequestUrls.getBaseUrl() + tmp.getPathUrl())!
-        tmp.setPathUrl("/api/action/datastore_search?ddresource_id=a807b7ab-6cad-4aa6-87d0-e283a7353a0f&limit=28")
+        tmp.setPathUrl("/api/action/datastore_search?ddefresource_id=a807b7ab-6cad-4aa6-87d0-e283a7353a0f&limit=28")
         let exp = expectation(description: "GET \(url)")
         RequestUrls.getData = tmp.getPathUrl()
         UserHelper.callAPI(urlName: .getData, method: .get, parameters: [:]) { (status, result, error) in
             XCTAssert(status == false, "failureAPICallTest")
             exp.fulfill()
         }
-        waitForExpectations(timeout: 5){ error in
-            if let error = error {
-                print("Error: \(error.localizedDescription)")
-            }
-        }
-    }
-    
-    //Failure API call test
-    func getData(_ tmp: DataConsumptionViewModel){
-        let url = NSURL(string: RequestUrls.getBaseUrl() + tmp.getPathUrl())!
-        tmp.setPathUrl("/api/action/datastore_search?ddresource_id=a807b7ab-6cad-4aa6-87d0-e283a7353a0f&limit=28")
-        let exp = expectation(description: "GET \(url)")
-        tmp.getData()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-            print("data", tmp.getTotalRecordCount())
-            exp.fulfill()
-        }
-        waitForExpectations(timeout: 5){ error in
+        waitForExpectations(timeout: 15){ error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
             }

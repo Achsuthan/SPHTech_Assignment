@@ -40,37 +40,18 @@ class UserHelper: HeaderHelper {
             case .delete:
                 Httpmethod = .delete
             }
-            if tparameter.count > 0{
-                Alamofire.request(urlString,method: Httpmethod, parameters: tparameter, encoding: JSONEncoding.default, headers: getCommonHeaders()).responseJSON { (dataResponse) in
-                    if dataResponse.result.isSuccess {
-                        let resultJSON = JSON(dataResponse.result.value!)
-                        
-                        print("result \(resultJSON)")
-                        
-                        if resultJSON["error"].stringValue  == "Unauthenticated." {
-                            return
-                        }
-                        completion(true, resultJSON, nil)
-                    } else {
+            Alamofire.request(urlString,method: Httpmethod, parameters: tparameter.count > 0 ? tparameter : nil, encoding: JSONEncoding.default, headers: getCommonHeaders()).responseJSON { (dataResponse) in
+                if dataResponse.result.isSuccess {
+                    let resultJSON = JSON(dataResponse.result.value!)
+                    
+                    print("result \(resultJSON)")
+                    
+                    if resultJSON["error"].stringValue  == "Unauthenticated." {
                         return
                     }
-                }
-            }
-            else{
-                Alamofire.request(urlString,method: Httpmethod, parameters: nil, encoding: JSONEncoding.default, headers: getCommonHeaders()).responseJSON { (dataResponse) in
-                    if dataResponse.result.isSuccess {
-                        let resultJSON = JSON(dataResponse.result.value!)
-                        
-                        print("result \(resultJSON)")
-                        
-                        if resultJSON["error"].stringValue  == "Unauthenticated." {
-                            return
-                        }
-                        completion(true, resultJSON, nil)
-                    } else {
-                        print("something wrong")
-                        completion(false, nil, nil)
-                    }
+                    completion(true, resultJSON, nil)
+                } else {
+                    return
                 }
             }
         }

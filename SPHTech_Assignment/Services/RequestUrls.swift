@@ -15,7 +15,7 @@ struct RequestUrls {
     private static var sandboxUrl = "https://data.gov.sg" //Client
     private static var liveUrl = ""
     
-    public static func getBaseUrlStatus() -> String{
+    public static func checkBaseUrlPort() -> String{
         return port
     }
     
